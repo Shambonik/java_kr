@@ -14,6 +14,7 @@ public class LoginController {
     public String getPage(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.getPrincipal()!="anonymousUser"){
+            System.out.println(auth.getPrincipal());
             return "redirect:/";
         }
         return "login";

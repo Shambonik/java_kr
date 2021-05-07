@@ -16,7 +16,8 @@ public class MainController {
     @GetMapping
     public String getPage(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("authorized", auth.getPrincipal()!="anonymousUser");
         model.addAttribute("admin", auth.getAuthorities().contains(Role.ADMIN));
-        return "home";
+        return "index";
     }
 }

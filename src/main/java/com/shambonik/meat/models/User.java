@@ -24,7 +24,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-
+    @Transient
+    private String admin;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

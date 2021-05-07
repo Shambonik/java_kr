@@ -1,5 +1,6 @@
 package com.shambonik.meat.configuration;
 
+import com.shambonik.meat.models.Role;
 import com.shambonik.meat.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/", "/home", "/registration").permitAll()
+                    .antMatchers("/admin").hasAuthority(Role.ADMIN.getAuthority())
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()

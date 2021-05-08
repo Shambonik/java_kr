@@ -19,4 +19,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Set<Product_Category> category;
     private String imageName;
+    private int count = 0;
+
+    public void setAll(String name, String description, Set<Product_Category> category, int count){
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.count = count;
+    }
 }

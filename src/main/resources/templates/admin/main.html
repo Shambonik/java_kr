@@ -5,12 +5,20 @@
     <title>Админка</title>
 </head>
 <body>
-    <div th:each="product: ${list}">
+    <div th:each="product: ${list}" style="border: 2px dashed; padding: 10px;">
         <h3 th:text="${product.getName()}"></h3>
+        <br>
+        <span th:text="${product.getCategory()}"></span>
+        <br>
         <img th:src="@{'/images/'+${product.getImageName()}}" height="400px">
         <br>
         <span th:text="${product.getDescription()}"></span>
-        <span th:text="${product.getCategory()}"></span>
+        <br>
+        Количество:
+        <span th:text="${product.getCount()}"></span>
+        <form th:method="get" th:action="@{/admin/edit_product/{id} (id = ${product.getId()})}">
+            <button type="submit">Редактировать</button>
+        </form>
         <form th:method="post" th:action="@{/admin/product/{id} (id = ${product.getId()})}">
             <button type="submit">Удалить</button>
         </form>

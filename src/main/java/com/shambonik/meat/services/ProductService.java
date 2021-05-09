@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ProductService {
     private final ProductRepo productRepo;
     @Value("${upload.path}")
-    String uploadPath;
+    private String uploadPath;
 
     public List<Product> getProducts(){
         return productRepo.findAll();
@@ -131,5 +131,9 @@ public class ProductService {
         }
         redirectAttributes.addFlashAttribute("fileErr", "Поле фалйа не может быть пустым");
         return "redirect:/admin/product/edit_product/" + id + "/image";
+    }
+
+    public Product getProductById(long id){
+        return productRepo.findProductById(id);
     }
 }

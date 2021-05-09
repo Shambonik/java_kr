@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+</head>
+<body>
+    <h1>Корзина</h1>
+    <div th:each = "entry: ${list}">
+        <h3 th:text="${entry.getProduct().getName()}"></h3>
+        <br>
+        <span th:text="${entry.getProduct().getCategory()}"></span>
+        <br>
+        <img th:src="@{'/images/'+${entry.getProduct().getImageName()}}" height="400px">
+        <br>
+        <span th:text="${entry.getProduct().getDescription()}"></span>
+        <br>
+        <br>
+        <span>В корзине: </span>
+        <span th:text="${entry.getCount()}"></span>
+        <br>
+    </div>
+</body>
+</html>

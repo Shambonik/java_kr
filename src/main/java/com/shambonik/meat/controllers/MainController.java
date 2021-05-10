@@ -35,9 +35,4 @@ public class MainController {
     public String addToCart(@CookieValue(value = "meatCart", required = false) String meatCart, @PathVariable("id") long id, HttpServletResponse response){
         return cartService.addToCart(meatCart, id, response);
     }
-
-    @GetMapping("cart")
-    public String getCartPage(@CookieValue(value = "meatCart", required = false) String meatCart, Model model){
-        return cartService.getCart(meatCart, model);
-    }
 }

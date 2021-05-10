@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Корзина</h1>
-    <div th:each = "entry: ${list}">
+    <div th:each = "entry: ${list}" style="border: 2px dashed; padding: 10px;">
         <h3 th:text="${entry.getProduct().getName()}"></h3>
         <br>
         <span th:text="${entry.getProduct().getCategory()}"></span>
@@ -16,8 +16,21 @@
         <span th:text="${entry.getProduct().getDescription()}"></span>
         <br>
         <br>
-        <span>В корзине: </span>
-        <span th:text="${entry.getCount()}"></span>
+        <div th:if="${entry.getProduct().getCount()}>0">
+            На складе:
+            <span th:text="${entry.getProduct().getCount()}"></span>
+            <br>
+            Количество:
+            <span th:text="${entry.getCount()}"></span>
+            <h4>Изменить количество товара</h4>
+            <form th:method="get" th:action="@{/cart/edit_count/{id} (id = ${entry.getProduct().getId()})}">
+                <input type="number" th:name="count" th:value="${entry.getCount()}" min="0" th:max="${entry.getProduct().getCount()}"/>
+                <div><input type="submit" value="Сохранить"/></div>
+            </form>
+        </div>
+        <div th:if="${entry.getProduct().getCount()}==0">
+            <span style="color: red">К сожалению, товар закончился</span>
+        </div>
         <br>
     </div>
 </body>

@@ -5,36 +5,32 @@
     <title>Edit product</title>
 </head>
 <body>
-<h1>Edit product</h1>
-<form th:action="@{/admin/edit_product/{id} (id = ${product.getId()})}" method="post" th:object="${product}">
-    <div>
-        <label> Product Name : <input type="text" th:field="*{name}"/> </label>
-        <span style="color: red" th:text="${nameErr}"></span>
-    </div>
-    <div>
-        <label> Description: <input type="text" th:field="*{description}"/> </label>
-        <span style="color: red" th:text="${descriptionErr}"></span>
-    </div>
-    <div>
-        <label> Count <input type="number" th:field="*{count}" min="0"/> </label>
-    </div>
-    <select th:field="*{category}">
-        <option value=""> -- </option>
-        <option th:each="categoryEnum : ${categories}" th:value="${categoryEnum}" th:text="${categoryEnum}"></option>
-    </select>
-    <span style="color: red" th:text="${categoryErr}"></span>
-<!--    <div>-->
-<!--        <label>Изображение товара</label>-->
-<!--        <input type="file" name="image">-->
-<!--        <span style="color: red" th:text="${fileErr}"></span>-->
-<!--    </div>-->
-    <div><input type="submit" value="Save"/></div>
-</form>
-<form th:method="get" th:action="@{/admin/product/edit_product/{id}/image (id = ${product.getId()})}">
-    <button type="submit">Изменить изоображение</button>
-</form>
-<form th:method="get" th:action="@{/admin}">
-    <button type="submit">Отменить</button>
-</form>
+    <a href="/">Главная</a>
+    <h1>Edit product</h1>
+    <form th:action="@{/admin/edit_product/{id} (id = ${product.getId()})}" method="post" th:object="${product}">
+        <div>
+            <label> Product Name : <input type="text" th:field="*{name}"/> </label>
+            <span style="color: red" th:text="${nameErr}"></span>
+        </div>
+        <div>
+            <label> Description: <input type="text" th:field="*{description}"/> </label>
+            <span style="color: red" th:text="${descriptionErr}"></span>
+        </div>
+        <div>
+            <label> Count <input type="number" th:field="*{count}" min="0"/> </label>
+        </div>
+        <select th:field="*{category}">
+            <option value=""> -- </option>
+            <option th:each="categoryEnum : ${categories}" th:value="${categoryEnum}" th:text="${categoryEnum}"></option>
+        </select>
+        <span style="color: red" th:text="${categoryErr}"></span>
+        <div><input type="submit" value="Save"/></div>
+    </form>
+    <form th:method="get" th:action="@{/admin/product/edit_product/{id}/image (id = ${product.getId()})}">
+        <button type="submit">Изменить изоображение</button>
+    </form>
+    <form th:method="get" th:action="@{/admin}">
+        <button type="submit">Отменить</button>
+    </form>
 </body>
 </html>

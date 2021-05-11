@@ -5,6 +5,7 @@
     <title>Админка</title>
 </head>
 <body>
+    <a href="/">Главная</a>
     <div th:each="product: ${list}" style="border: 2px dashed; padding: 10px;">
         <h3 th:text="${product.getName()}"></h3>
         <br>
@@ -24,6 +25,5 @@
         </form>
     </div>
     <a href="/admin/add_product">Добавить продукт</a>
-    <a href="/">Главная</a>
 </body>
 </html>

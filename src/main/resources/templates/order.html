@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+</head>
+<body>
+    <h1>Заказ</h1>
+    <form th:action="@{/cart/order}" method="post" th:object="${order}">
+        <div><label> Name : <input type="text" th:field="*{name}"/> </label></div>
+        <div><label> Address: <input type="text" th:field="*{address}"/> </label></div>
+        <div><label> Email: <input type="email" th:field="*{email}"/> </label></div>
+        <div><label> Phone: <input type="tel" th:field="*{phone}"/> </label></div>
+        <div><input type="submit" value="Заказать"/></div>
+    </form>
+    <a href="/cart">Отмена</a>
+</body>
+</html>

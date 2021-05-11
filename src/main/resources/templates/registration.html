@@ -5,14 +5,15 @@
     <title>Spring Security Example </title>
 </head>
 <body>
-<div th:if="${message}">
-    [[${message}]]
-</div>
-<form th:action="@{/registration}" method="post" th:object="${user}">
-    <div><label> User Name : <input type="text" th:field="*{username}"/> </label></div>
-    <div><label> Password: <input type="password" th:field="*{password}"/> </label></div>
-    <div><label> Admin: <input type="text" th:field="*{admin}"/> </label></div>
-    <div><input type="submit" value="Register"/></div>
-</form>
+    <a href="/">Главная</a>
+    <div th:if="${message}">
+        [[${message}]]
+    </div>
+    <form th:action="@{/registration}" method="post" th:object="${user}">
+        <div><label> Login : <input type="text" th:field="*{username}"/> </label></div>
+        <div><label> Password: <input type="password" th:field="*{password}"/> </label></div>
+        <div><label> Admin: <input type="text" th:field="*{admin}"/> </label></div>
+        <div><input type="submit" value="Register"/></div>
+    </form>
 </body>
 </html>

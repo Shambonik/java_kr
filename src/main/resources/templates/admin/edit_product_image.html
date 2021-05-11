@@ -5,6 +5,7 @@
     <title>Edit Image</title>
 </head>
 <body>
+    <a href="/">Главная</a>
     <h1>Изменить изображение</h1>
     <h2 th:text="${product.getName()}"/>
     <form enctype="multipart/form-data" th:action="@{/admin/product/edit_product/{id}/image (id = ${product.getId()})}" method="post">

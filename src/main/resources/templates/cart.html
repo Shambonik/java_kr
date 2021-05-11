@@ -5,6 +5,7 @@
     <title>Корзина</title>
 </head>
 <body>
+    <a href="/">Главная</a>
     <h1>Корзина</h1>
     <div th:each = "entry: ${list}" style="border: 2px dashed; padding: 10px;">
         <h3 th:text="${entry.getProduct().getName()}"></h3>
@@ -33,5 +34,6 @@
         </div>
         <br>
     </div>
+    <a href="/cart/order">Заказать</a>
 </body>
 </html>

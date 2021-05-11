@@ -22,12 +22,13 @@ public class MainController {
     private final CartService cartService;
 
     @GetMapping
-    public String getPage(@CookieValue(value = "meatCart", required = false) String meatCart, Model model){
+    public String getPage(@CookieValue(value = "meatCart", required = false) String meatCart,
+                          HttpServletResponse response, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("authorized", auth.getPrincipal()!="anonymousUser");
         model.addAttribute("admin", auth.getAuthorities().contains(Role.ADMIN));
         model.addAttribute("list", productService.getProducts());
-        model.addAttribute("cartSize", cartService.getCartSize(meatCart));
+        model.addAttribute("cartSize", cartService.getCartSize(meatCart, response));
         return "index";
     }
 

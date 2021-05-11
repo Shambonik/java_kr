@@ -1,6 +1,6 @@
 package com.shambonik.meat.controllers;
 
-import com.shambonik.meat.Pair;
+import com.shambonik.meat.models.Order;
 import com.shambonik.meat.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +24,12 @@ public class CartController {
     public String getCartPage(@PathVariable("id") long id, @RequestParam(value = "count") int count,
                               @CookieValue(value = "meatCart") String meatCart,  HttpServletResponse response){
         return cartService.editProductCount(id, count, meatCart, response);
+    }
+
+    @GetMapping("/order")
+    public String getOrderPage(Model model){
+        model.addAttribute("order", new Order());
+        return "order";
     }
 
 }

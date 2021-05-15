@@ -19,6 +19,11 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
 
+    private String name;
+    private String address;
+    private String email;
+    private String phone;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role_shamb", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -30,6 +35,13 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
+    }
+
+    public void setData(String name, String address, String email,String phone){
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
     }
 
     @Override

@@ -6,7 +6,7 @@
 </head>
 <body>
     <a href="/">Главная</a>
-    <div th:if="${param.error}">
+    <div th:if="${param.error}" style="color: red">
         Invalid username and password.
     </div>
     <div th:if="${param.logout}">

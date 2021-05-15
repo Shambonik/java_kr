@@ -2,20 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Order</title>
+    <title>Редактирование профиля</title>
 </head>
 <body>
-    <h1>Заказ</h1>
-    <div th:if="${message}" style="color: red">
-        [[${message}]]
-    </div>
-    <form th:action="@{/order}" method="post" th:object="${order}">
+    <form th:action="@{/edit_account}" method="post" th:object="${user}">
         <div><label> Name : <input type="text" th:field="*{name}"/> </label></div>
         <div><label> Address: <input type="text" th:field="*{address}"/> </label></div>
         <div><label> Email: <input type="email" th:field="*{email}"/> </label></div>
         <div><label> Phone: <input type="tel" th:field="*{phone}"/> </label></div>
-        <div><input type="submit" value="Заказать"/></div>
+        <div><input type="submit" value="Сохранить"/></div>
     </form>
-    <a href="/cart">Отмена</a>
+    <a href="/">Отмена</a>
 </body>
 </html>

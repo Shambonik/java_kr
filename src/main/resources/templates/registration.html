@@ -6,7 +6,7 @@
 </head>
 <body>
     <a href="/">Главная</a>
-    <div th:if="${message}">
+    <div th:if="${message}" style="color: red">
         [[${message}]]
     </div>
     <form th:action="@{/registration}" method="post" th:object="${user}">

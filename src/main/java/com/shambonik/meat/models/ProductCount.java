@@ -18,4 +18,9 @@ public class ProductCount {
     @ManyToOne
     private Product product;
     private int count;
+
+    public ProductCount(Product product, int count){
+        this.product = product;
+        this.count = count;
+    }
 }

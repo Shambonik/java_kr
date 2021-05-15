@@ -4,6 +4,7 @@ import com.shambonik.meat.models.User;
 import com.shambonik.meat.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,27 +15,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/registration")
+@RequestMapping("/edit_account")
 @RequiredArgsConstructor
-public class RegistrationController {
+public class EditAccountController {
     private final UserService userService;
 
     @GetMapping
-    public String getPage(Model model){
+    public String getPage(@AuthenticationPrincipal User user, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth.getPrincipal()!="anonymousUser"){
-            return "redirect:/";
-        }
-        model.addAttribute("user", new User());
-        return "registration";
+        System.out.println(auth);
+        model.addAttribute("user", auth.getPrincipal());
+        return "edit_account";
     }
 
     @PostMapping()
-    public String addUser(User user, Map<String, Object> model){
-        if(!userService.addUser(user)){
-            model.put("message", "User exists!");
-            return "registration";
-        }
+    public String editUser(@AuthenticationPrincipal User originalUser, User user){
+        userService.saveUser(originalUser, user);
         return "redirect:/login";
     }
 }

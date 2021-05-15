@@ -18,4 +18,11 @@ public class Order {
     private String phone = "";
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<ProductCount> products;
+
+    public void setData(String name, String address, String email, String phone){
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+    }
 }

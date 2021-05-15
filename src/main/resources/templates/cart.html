@@ -33,7 +33,13 @@
             <span style="color: red">К сожалению, товар закончился</span>
         </div>
         <br>
+        <form th:method="get" th:action="@{/cart/delete/{id} (id = ${entry.getProduct().getId()})}">
+            <div><input type="submit" value="Удалить из корзины"/></div>
+        </form>
     </div>
-    <a href="/cart/order">Заказать</a>
+    <form th:method="get" th:action="@{/cart/clear}">
+        <div><input type="submit" value="Очистить корзину"/></div>
+    </form>
+    <a href="/order">Заказать</a>
 </body>
 </html>

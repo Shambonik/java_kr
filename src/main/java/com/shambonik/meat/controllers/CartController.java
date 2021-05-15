@@ -21,15 +21,21 @@ public class CartController {
     }
 
     @GetMapping("/edit_count/{id}")
-    public String getCartPage(@PathVariable("id") long id, @RequestParam(value = "count") int count,
+    public String editProductCount(@PathVariable("id") long id, @RequestParam(value = "count") int count,
                               @CookieValue(value = "meatCart") String meatCart,  HttpServletResponse response){
         return cartService.editProductCount(id, count, meatCart, response);
     }
 
-    @GetMapping("/order")
-    public String getOrderPage(Model model){
-        model.addAttribute("order", new Order());
-        return "order";
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") long id,
+                              @CookieValue(value = "meatCart") String meatCart,  HttpServletResponse response){
+        return cartService.editProductCount(id, 0, meatCart, response);
+    }
+
+    @GetMapping("/clear")
+    public String clearCart(HttpServletResponse response){
+        cartService.clearCart(response);
+        return "redirect:/";
     }
 
 }

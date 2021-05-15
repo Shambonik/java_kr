@@ -29,6 +29,11 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public void saveUser(User originalUser, User user){
+        originalUser.setData(user.getName(), user.getAddress(), user.getEmail(), user.getPhone());
+        userRepo.save(originalUser);
+    }
+
     public boolean addUser(User user) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
         if (userFromDb != null) {

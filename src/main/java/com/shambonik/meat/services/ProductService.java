@@ -1,6 +1,7 @@
 package com.shambonik.meat.services;
 
 import com.shambonik.meat.models.Product;
+import com.shambonik.meat.models.ProductCount;
 import com.shambonik.meat.models.Product_Category;
 import com.shambonik.meat.repositories.ProductRepo;
 import lombok.RequiredArgsConstructor;
@@ -131,6 +132,11 @@ public class ProductService {
         }
         redirectAttributes.addFlashAttribute("fileErr", "Поле фалйа не может быть пустым");
         return "redirect:/admin/product/edit_product/" + id + "/image";
+    }
+
+    public void reduceCount(ProductCount productCount){
+        productCount.getProduct().setCount(productCount.getProduct().getCount()-productCount.getCount());
+        productRepo.save(productCount.getProduct());
     }
 
     public Product getProductById(long id){

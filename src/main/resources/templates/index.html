@@ -10,6 +10,10 @@
 
     <p>Click <a th:href="@{/login}">here</a> to log in</p>
     <div th:if="${authorized}">
+        <form th:method="get" th:action="@{/edit_account}">
+            <button type="submit">Редактировать профиль</button>
+        </form>
+        <br>
         <form th:method="post" th:action="@{/logout}">
             <button type="submit">Выйти</button>
         </form>

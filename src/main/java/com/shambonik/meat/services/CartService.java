@@ -1,6 +1,7 @@
 package com.shambonik.meat.services;
 
 import com.shambonik.meat.models.Product;
+import com.shambonik.meat.models.ProductCount;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,35 @@ public class CartService {
     private final ProductService productService;
     @Value("${cookie.name}")
     private String cookieName;
+
+
+    public List<ProductCount> getProducts(String meatCart){
+        if(meatCart!=null && !meatCart.equals("")) {
+            String[] stringIDs = getListOfIDs(meatCart);
+            ArrayList<Long> IDs = new ArrayList<>();
+            for (String id : stringIDs) {
+                IDs.add(Long.parseLong(id));
+            }
+            Map<Long, Integer> mapIDs = new HashMap<>();
+            for (int i = 0; i < IDs.size(); i++) {
+                Long temp = IDs.get(i);
+                if (!mapIDs.containsKey(temp)) {
+                    mapIDs.put(temp, 1);
+                } else {
+                    mapIDs.put(temp, mapIDs.get(temp) + 1);
+                }
+            }
+            ArrayList<ProductCount> list = new ArrayList<>();
+            for (Map.Entry<Long, Integer> entry : mapIDs.entrySet()) {
+                Product product = productService.getProductById(entry.getKey());
+                if (product != null) {
+                    list.add(new ProductCount(product, entry.getValue()));
+                }
+            }
+            return list;
+        }
+        return null;
+    }
 
     public String addToCart(String meatCart, long id, HttpServletResponse response){
         Cookie cookie = new Cookie(cookieName,
@@ -74,44 +104,7 @@ public class CartService {
     }
 
     public String getCart(String meatCart, Model model){
-        @Data
-        class Pair{
-            private Product product;
-            private long count;
-
-            public Pair(Product product, long count) {
-                this.product = product;
-                this.count = count;
-            }
-        }
-
-        if(meatCart!=null && !meatCart.equals("")) {
-            String[] stringIDs = getListOfIDs(meatCart);
-            ArrayList<Long> IDs = new ArrayList<>();
-            for (String id : stringIDs) {
-                IDs.add(Long.parseLong(id));
-            }
-            Map<Long, Integer> mapIDs = new HashMap<>();
-            for (int i = 0; i < IDs.size(); i++) {
-                Long temp = IDs.get(i);
-                if (!mapIDs.containsKey(temp)) {
-                    mapIDs.put(temp, 1);
-                } else {
-                    mapIDs.put(temp, mapIDs.get(temp) + 1);
-                }
-            }
-            ArrayList<Pair> list = new ArrayList<>();
-            for (Map.Entry<Long, Integer> entry : mapIDs.entrySet()) {
-                Product product = productService.getProductById(entry.getKey());
-                if (product != null) {
-                    list.add(new Pair(product, entry.getValue()));
-                }
-            }
-            model.addAttribute("list", list);
-        }
-        else {
-            model.addAttribute("list", null);
-        }
+        model.addAttribute("list", getProducts(meatCart));
         return "cart";
     }
 
@@ -128,5 +121,12 @@ public class CartService {
         cookie.setMaxAge(86400);
         response.addCookie(cookie);
         return "redirect:/cart";
+    }
+
+    public void clearCart(HttpServletResponse response){
+        Cookie cookie = new Cookie(cookieName, "");
+        cookie.setPath("/");
+        cookie.setMaxAge(86400);
+        response.addCookie(cookie);
     }
 }

@@ -1,10 +1,10 @@
 package com.shambonik.meat.repositories;
 
-import com.shambonik.meat.models.User;
+
+import com.shambonik.meat.models.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Long> {
-    User findByUsername(String username);
+public interface OrderRepo extends JpaRepository<Order, Long> {
 }

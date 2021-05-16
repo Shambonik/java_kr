@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+</head>
+<body>
+    <a href="/">Главная</a>
+    <br>
+    <div th:each = "entry: ${list}" style="border: 2px dashed; padding: 10px;">
+        <span th:text="${entry.getId()}"></span>
+        <br>
+        <span th:text="${entry.getUsername()}"></span>
+        <br>
+        <span th:text="${entry.getRoles()}"></span>
+        <br>
+    </div>
+</body>
+</html>

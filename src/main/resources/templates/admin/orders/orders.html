@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказы</title>
+</head>
+<body>
+    <a href="/">Главная</a>
+    <br>
+    <div th:each = "entry: ${list}" style="border: 2px dashed; padding: 10px;">
+        ID:
+        <span th:text="${entry.getId()}"></span>
+        <br>
+        Имя покупателя:
+        <span th:text="${entry.getName()}"></span>
+        <br>
+        Адрес:
+        <span th:text="${entry.getAddress()}"></span>
+        <br>
+        Email:
+        <span th:text="${entry.getEmail()}"></span>
+        <br>
+        Phone:
+        <span th:text="${entry.getPhone()}"></span>
+        <br>
+        Заказанные товары:
+        <div th:each = "product: ${entry.getProducts()}" style="border: 1px solid; padding: 5px;">
+            ID:
+            <span th:text="${product.getProduct().getId()}"></span>
+            <br>
+            Название товара:
+            <span th:text="${product.getProduct().getName()}"></span>
+            <br>
+            Количество:
+            <span th:text="${product.getCount()}"></span>
+        </div>
+        <br>
+    </div>
+</body>
+</html>

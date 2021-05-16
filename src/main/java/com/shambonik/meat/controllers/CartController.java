@@ -1,6 +1,5 @@
 package com.shambonik.meat.controllers;
 
-import com.shambonik.meat.models.Order;
 import com.shambonik.meat.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

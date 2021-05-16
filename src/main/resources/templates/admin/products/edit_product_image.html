@@ -8,7 +8,7 @@
     <a href="/">Главная</a>
     <h1>Изменить изображение</h1>
     <h2 th:text="${product.getName()}"/>
-    <form enctype="multipart/form-data" th:action="@{/admin/product/edit_product/{id}/image (id = ${product.getId()})}" method="post">
+    <form enctype="multipart/form-data" th:action="@{/admin/products/edit_product/{id}/image (id = ${product.getId()})}" method="post">
         <div>
             <label>Изображение товара</label>
             <input type="file" name="image">
@@ -16,7 +16,7 @@
         </div>
         <div><input type="submit" value="Save"/></div>
     </form>
-    <form th:method="get" th:action="@{/admin}">
+    <form th:method="get" th:action="@{/admin/products}">
         <button type="submit">Отменить</button>
     </form>
 </body>

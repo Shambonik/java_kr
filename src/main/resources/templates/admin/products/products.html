@@ -17,13 +17,13 @@
         <br>
         Количество:
         <span th:text="${product.getCount()}"></span>
-        <form th:method="get" th:action="@{/admin/edit_product/{id} (id = ${product.getId()})}">
+        <form th:method="get" th:action="@{/admin/products/edit_product/{id} (id = ${product.getId()})}">
             <button type="submit">Редактировать</button>
         </form>
-        <form th:method="post" th:action="@{/admin/product/{id} (id = ${product.getId()})}">
+        <form th:method="post" th:action="@{/admin/products/delete_product/{id} (id = ${product.getId()})}">
             <button type="submit">Удалить</button>
         </form>
     </div>
-    <a href="/admin/add_product">Добавить продукт</a>
+    <a href="/admin/products/add_product">Добавить продукт</a>
 </body>
 </html>

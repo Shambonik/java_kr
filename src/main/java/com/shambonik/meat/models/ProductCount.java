@@ -1,12 +1,15 @@
 package com.shambonik.meat.models;
 
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "product_count_shamb")
 @Data
+@NoArgsConstructor
 public class ProductCount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

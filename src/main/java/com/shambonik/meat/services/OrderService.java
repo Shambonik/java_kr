@@ -6,7 +6,6 @@ import com.shambonik.meat.repositories.OrderRepo;
 import com.shambonik.meat.repositories.ProductCountRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -19,6 +18,10 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepo orderRepo;
     private final ProductCountRepo productCountRepo;
+
+    public List<Order> getOrders(){
+        return orderRepo.findAll();
+    }
 
     public String saveOrder(Order order, String meatCart, Map<String, Object> model, HttpServletResponse response){
         if((order.getName()==null || order.getAddress()==null || order.getEmail() == null || order.getPhone() == null) ||

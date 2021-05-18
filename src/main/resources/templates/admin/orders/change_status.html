@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Заказы</title>
+    <title>Change status</title>
 </head>
 <body>
     <a href="/">Главная</a>
-    <br>
-    <div th:each = "order: ${list}" style="border: 2px dashed; padding: 10px;">
+    <h1>Change status</h1>
+    <div style="border: 2px dashed; padding: 10px;">
         ID:
         <span th:text="${order.getId()}"></span>
         <br>
@@ -42,11 +42,15 @@
             Количество:
             <span th:text="${product.getCount()}"></span>
         </div>
-        <br>
-        Статус заказа:
-        <span th:text="${order.getStatus()}"></span>
-        <form th:method="get" th:action="@{/admin/orders/changeStatus/{id} (id = ${order.getId()})}">
-            <div><input type="submit" value="Изменить статус"/></div>
+
+        <form th:method="post" th:action="@{/admin/orders/changeStatus/{id} (id = ${order.getId()})}" th:object="${order}">
+            <select th:field="*{status}">
+                <option th:each="statusEnum : ${statuses}" th:value="${statusEnum}" th:text="${statusEnum}"></option>
+            </select>
+            <div><input type="submit" value="Сохранить"/></div>
+        </form>
+        <form th:method="get" th:action="@{/admin/orders}">
+            <button type="submit">Отменить</button>
         </form>
     </div>
 </body>

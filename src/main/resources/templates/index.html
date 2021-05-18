@@ -4,11 +4,13 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-    <h1>Welcome!</h1>
+    <h1>Мясная лавка</h1>
 
     <a href="/cart">Корзина <span th:text="${cartSize}"></span></a>
-
-    <p>Click <a th:href="@{/login}">here</a> to log in</p>
+    <br>
+    <div th:if="!${authorized}">
+        <p>Click <a th:href="@{/login}">here</a> to log in</p>
+    </div>
     <div th:if="${authorized}">
         <form th:method="get" th:action="@{/edit_account}">
             <button type="submit">Редактировать профиль</button>

@@ -1,5 +1,7 @@
 package com.shambonik.meat.controllers;
 
+import com.shambonik.meat.models.Order;
+import com.shambonik.meat.models.Order_Status;
 import com.shambonik.meat.models.Product;
 import com.shambonik.meat.models.Product_Category;
 import com.shambonik.meat.services.OrderService;
@@ -32,6 +34,17 @@ public class AdminController {
         return "admin/orders/orders";
     }
 
+    @PostMapping("/orders/changeStatus/{id}")
+    public String changeStatus(@PathVariable("id") long id, Order order){
+        return orderService.changeStatus(id, order);
+    }
+
+
+    @GetMapping("/orders/changeStatus/{id}")
+    public String getChangeStatusPage(@PathVariable("id") long id, Model model){
+        return orderService.getChangeStatusPage(id, model);
+    }
+
 
     @GetMapping("/products")
     public String getProductsPage(Model model){
@@ -54,7 +67,6 @@ public class AdminController {
 
     @PostMapping("/products/add_product")
     public String addProduct(Product product, RedirectAttributes redirectAttributes, @RequestParam(name = "image") MultipartFile file){
-//        productService.addProduct(product, file);
         return productService.addProduct(product, redirectAttributes, file);
     }
 

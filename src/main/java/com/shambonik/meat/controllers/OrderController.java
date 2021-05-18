@@ -32,7 +32,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public String saveOrder(Order order, @CookieValue(value = "meatCart") String meatCart, Map<String, Object> model, HttpServletResponse response){
-        return orderService.saveOrder(order, meatCart, model, response);
+    public String saveOrder(@AuthenticationPrincipal User user, Order order, @CookieValue(value = "meatCart") String meatCart, Map<String, Object> model, HttpServletResponse response){
+        return orderService.saveOrder(user, order, meatCart, model, response);
     }
 }

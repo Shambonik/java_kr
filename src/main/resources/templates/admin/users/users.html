@@ -7,12 +7,25 @@
 <body>
     <a href="/">Главная</a>
     <br>
-    <div th:each = "entry: ${list}" style="border: 2px dashed; padding: 10px;">
-        <span th:text="${entry.getId()}"></span>
+    <div th:each = "user, iteration: ${list}" style="border: 2px dashed; padding: 10px;">
+        <span th:text="${user.getId()}"></span>
+
+        <span th:text="${user.getUsername()}"></span>
         <br>
-        <span th:text="${entry.getUsername()}"></span>
-        <br>
-        <span th:text="${entry.getRoles()}"></span>
+        <div th:if="${currentID == user.getId()}">
+            <span th:text="${user.getRoles()}"></span>
+        </div>
+        <div th:if="${currentID != user.getId()}">
+            <form th:method="post" th:action="@{/admin/users/change_role/{id} (id = ${user.getId()})}" th:object="${changeRole}">
+                <div>
+                    <select id="role" name="role">
+                        <option th:each="rolesEnum : ${roles}" th:value="${rolesEnum}" th:text="${rolesEnum}"
+                                th:selected="${user.getRoles()[0] == rolesEnum}"></option>
+                    </select>
+                </div>
+                <div><input type="submit" value="Сменить роль"/></div>
+            </form>
+        </div>
         <br>
     </div>
 </body>

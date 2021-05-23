@@ -1,18 +1,19 @@
 package com.shambonik.meat.controllers;
 
-import com.shambonik.meat.models.Order;
-import com.shambonik.meat.models.Order_Status;
-import com.shambonik.meat.models.Product;
-import com.shambonik.meat.models.Product_Category;
+import com.shambonik.meat.dto.ChangeRole;
+import com.shambonik.meat.models.*;
 import com.shambonik.meat.services.OrderService;
 import com.shambonik.meat.services.ProductService;
 import com.shambonik.meat.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -23,9 +24,17 @@ public class AdminController {
     private final OrderService orderService;
 
     @GetMapping("/users")
-    public String getUsersPage(Model model){
+    public String getUsersPage(@AuthenticationPrincipal User user, Model model){
         model.addAttribute("list", userService.getUsers());
+        model.addAttribute("roles", Role.values());
+        model.addAttribute("changeRole", new ChangeRole());
+        model.addAttribute("currentID", user.getId());
         return "admin/users/users";
+    }
+
+    @PostMapping("/users/change_role/{id}")
+    public String changeUserRole(@AuthenticationPrincipal User user, @PathVariable("id") long id, ChangeRole changeRole){
+        return userService.changeUserRole(user, id, changeRole);
     }
 
     @GetMapping("/orders")

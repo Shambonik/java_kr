@@ -24,6 +24,16 @@
         <a href="/admin"> Админка </a>
     </div>
     <br><br>
+    <div>
+        Фильтр
+        <form th:method="post" th:action="@{/filter}" th:object="${categories}">
+            <div th:each="category, iteration: *{list}">
+                <label th:text="${category.getName()}"></label>
+                <input type="checkbox" th:field="*{list[__${iteration.index}__].checked}"/>
+            </div>
+            <button type="submit">Отфильтровать</button>
+        </form>
+    </div>
     <div th:each="product: ${list}" style="border: 2px dashed; padding: 10px;">
         <h3 th:text="${product.getName()}"></h3>
         <br>

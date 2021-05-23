@@ -21,7 +21,6 @@ public class EditAccountController {
     @GetMapping
     public String getPage(@AuthenticationPrincipal User user, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth);
         model.addAttribute("user", auth.getPrincipal());
         return "edit_account";
     }
@@ -29,6 +28,6 @@ public class EditAccountController {
     @PostMapping()
     public String editUser(@AuthenticationPrincipal User originalUser, User user){
         userService.saveUser(originalUser, user);
-        return "redirect:/login";
+        return "redirect:/";
     }
 }

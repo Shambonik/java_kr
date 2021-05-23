@@ -1,5 +1,6 @@
 package com.shambonik.meat.services;
 
+import com.shambonik.meat.dto.CategoryFilters;
 import com.shambonik.meat.models.Product;
 import com.shambonik.meat.models.ProductCount;
 import com.shambonik.meat.models.Product_Category;
@@ -13,8 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +25,32 @@ public class ProductService {
 
     public List<Product> getProducts(){
         return productRepo.findAll();
+    }
+
+    public CategoryFilters getCategoryFilters(){
+        CategoryFilters filters = new CategoryFilters();
+        for(Product_Category i : Product_Category.getCategories()){
+            filters.getList().add(new CategoryFilters.Pair(i.name()));
+        }
+        return filters;
+    }
+
+    public String filter(CategoryFilters filters, RedirectAttributes redirectAttributes){
+        CategoryFilters categoryFilters = getCategoryFilters();
+        List<Product> productList = new ArrayList<>();
+        int falseCount = 0;
+        for(int i = 0; i < categoryFilters.getList().size(); i++) {
+            if(filters.getList().get(i).isChecked()) {
+                categoryFilters.getList().get(i).setChecked(true);
+                productList.addAll(productRepo.findProductsByCategory(
+                        Product_Category.valueOf(categoryFilters.getList().get(i).getName())));
+            }
+            else falseCount++;
+        }
+        if(falseCount<categoryFilters.getList().size())
+            redirectAttributes.addFlashAttribute("list", productList);
+        redirectAttributes.addFlashAttribute("categories", categoryFilters);
+        return "redirect:/";
     }
 
     public String addProduct(Product product, RedirectAttributes redirectAttributes, MultipartFile file){

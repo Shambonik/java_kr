@@ -1,9 +1,12 @@
 package com.shambonik.meat.services;
 
+import com.shambonik.meat.dto.ChangeRole;
 import com.shambonik.meat.models.Role;
 import com.shambonik.meat.models.User;
 import com.shambonik.meat.repositories.UserRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,9 +21,29 @@ import java.util.List;
 public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final SessionRegistry sessionRegistry;
 
     public List<User> getUsers(){
         return userRepo.findAll();
+    }
+
+    public String changeUserRole(User currentUser, long id, ChangeRole role){
+        if(currentUser.getId()!=id) {
+            User user = userRepo.findById(id);
+            user.setRoles(Collections.singleton(role.getRole()));
+            userRepo.save(user);
+            for (Object principal : sessionRegistry.getAllPrincipals()) {
+                if (principal instanceof User) {
+                    User userPrincipal = (User) principal;
+                    if (userPrincipal.getUsername().equals(user.getUsername())) {
+                        for (SessionInformation information : sessionRegistry.getAllSessions(userPrincipal, true)) {
+                            information.expireNow();
+                        }
+                    }
+                }
+            }
+        }
+        return "redirect:/admin/users";
     }
 
     @Override
@@ -45,7 +68,6 @@ public class UserService implements UserDetailsService {
             return false;
         }
         user.setActive(true);
-        System.out.println(user.getAdmin());
         if(user.getAdmin()!= null && user.getAdmin().equals("true"))
             user.setRoles(Collections.singleton(Role.ADMIN));
         else

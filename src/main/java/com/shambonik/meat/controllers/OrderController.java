@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -32,7 +29,33 @@ public class OrderController {
     }
 
     @PostMapping
-    public String saveOrder(@AuthenticationPrincipal User user, Order order, @CookieValue(value = "meatCart") String meatCart, Map<String, Object> model, HttpServletResponse response){
-        return orderService.saveOrder(user, order, meatCart, model, response);
+    public String saveOrder(@AuthenticationPrincipal User user, Order order,
+                            @CookieValue(value = "meatCart") String meatCart,
+                            @CookieValue(value = "orders", required = false) String orderCookie,
+                            Map<String, Object> model, HttpServletResponse response){
+        return orderService.saveOrder(user, order, meatCart, orderCookie, model, response);
     }
+
+    @PostMapping("/list/cancel/{id}")
+    public String cancelOrder(@PathVariable("id") long id){
+        return orderService.cancelOrder(id);
+    }
+
+
+    @GetMapping("/synchronize_orders")
+    public String synchronizeOrders(@AuthenticationPrincipal User user,
+                                    @CookieValue(value = "orders", required = false) String orderCookie,
+                                    HttpServletResponse response){
+        orderService.synchronizeOrders(user, orderCookie, response);
+        return "redirect:/";
+    }
+
+    @GetMapping("/list")
+    public String getOrderListPage(@AuthenticationPrincipal User user,
+                                   @CookieValue(value = "orders", required = false) String orderCookie,
+                                   HttpServletResponse response, Model model){
+        return orderService.getOrderListPage(user, orderCookie, response, model);
+    }
+
+
 }

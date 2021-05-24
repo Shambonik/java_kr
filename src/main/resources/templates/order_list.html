@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои заказы</title>
+</head>
+<body>
+<a href="/">Главная</a>
+<br>
+<h1>Мои заказы</h1>
+<div th:each = "order: ${list}" style="border: 2px dashed; padding: 10px;">
+    ID:
+    <span th:text="${order.getId()}"></span>
+    <br>
+    Имя покупателя:
+    <span th:text="${order.getName()}"></span>
+    <br>
+    Адрес:
+    <span th:text="${order.getAddress()}"></span>
+    <br>
+    Email:
+    <span th:text="${order.getEmail()}"></span>
+    <br>
+    Phone:
+    <span th:text="${order.getPhone()}"></span>
+    <br>
+    Заказанные товары:
+    <div th:each = "product: ${order.getProducts()}" style="border: 1px solid; padding: 5px;">
+        ID:
+        <span th:text="${product.getProduct().getId()}"></span>
+        <br>
+        Название товара:
+        <span th:text="${product.getProduct().getName()}"></span>
+        <br>
+        Количество:
+        <span th:text="${product.getCount()}"></span>
+    </div>
+    <br>
+    Статус заказа:
+    <span th:text="${order.getStatus()}"></span>
+    <div th:if='${!order.getStatus()[0].name().equals("COMPLETED") && !order.getStatus()[0].name().equals("CANCELED") }'>
+        <form th:method="post" th:action="@{/order/list/cancel/{id} (id = ${order.getId()})}">
+            <div><input type="submit" value="Отметить заказ"/></div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.shambonik.meat.services;
 
 import com.shambonik.meat.dto.ChangeRole;
+import com.shambonik.meat.models.Order;
 import com.shambonik.meat.models.Role;
 import com.shambonik.meat.models.User;
 import com.shambonik.meat.repositories.UserRepo;
@@ -25,6 +26,10 @@ public class UserService implements UserDetailsService {
 
     public List<User> getUsers(){
         return userRepo.findAll();
+    }
+
+    public User getUserById(long id){
+        return userRepo.findById(id);
     }
 
     public String changeUserRole(User currentUser, long id, ChangeRole role){

@@ -26,13 +26,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/", "/filter", "/registration",
                             "/end", "/images/**", "/add_to_cart/**",
                             "/cart", "/cart/**",
-                            "/order", "order/**").permitAll()
+                            "/order", "/order/**").permitAll()
                     .antMatchers("/admin", "/admin/**").hasAuthority(Role.ADMIN.getAuthority())
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/")
+                    .defaultSuccessUrl("/order/synchronize_orders")
                     .permitAll()
                 .and()
                     .rememberMe()

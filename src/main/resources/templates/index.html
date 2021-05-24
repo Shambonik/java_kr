@@ -5,8 +5,10 @@
 </head>
 <body>
     <h1>Мясная лавка</h1>
-
+    <br>
     <a href="/cart">Корзина <span th:text="${cartSize}"></span></a>
+    <br>
+    <a href="/order/list">Мои заказы</a>
     <br>
     <div th:if="!${authorized}">
         <p>Click <a th:href="@{/login}">here</a> to log in</p>

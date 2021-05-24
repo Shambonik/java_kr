@@ -15,7 +15,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CartService {
     private final ProductService productService;
-    @Value("${cookie.name}")
+    @Value("${cookie.cart.name}")
     private String cookieName;
 
 

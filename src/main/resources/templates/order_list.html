@@ -24,6 +24,9 @@
     Phone:
     <span th:text="${order.getPhone()}"></span>
     <br>
+    Итоговая цена:
+    <span th:text="${order.getTotalPrice()}"></span>
+    <br>
     Заказанные товары:
     <div th:each = "product: ${order.getProducts()}" style="border: 1px solid; padding: 5px;">
         ID:

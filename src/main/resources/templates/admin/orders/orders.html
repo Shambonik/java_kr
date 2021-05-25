@@ -23,6 +23,9 @@
         Phone:
         <span th:text="${order.getPhone()}"></span>
         <br>
+        Total price:
+        <span th:text="${order.getTotalPrice()}"></span>
+        <br>
         <div th:if="${order.getUser()} != null" style="border: 1px solid; padding: 5px;">
             User
             <br>

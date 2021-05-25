@@ -41,7 +41,7 @@ public class MainController {
         model.addAttribute("admin", auth.getAuthorities().contains(Role.ADMIN));
         model.addAttribute("cartSize", cartService.getCartSize(meatCart, response));
         if(!model.containsAttribute("list"))
-            model.addAttribute("list", productService.getProducts());
+            model.addAttribute("list", productService.getActiveProducts());
         if(!model.containsAttribute("categories"))
             model.addAttribute("categories", productService.getCategoryFilters());
         return "index";

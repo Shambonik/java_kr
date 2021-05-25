@@ -16,12 +16,14 @@
         <br>
         <span th:text="${entry.getProduct().getDescription()}"></span>
         <br>
+        Цена
+        <span th:text="${entry.getProduct().getPrice()}"></span>₽
         <br>
         <div th:if="${entry.getProduct().getCount()}>0">
             На складе:
             <span th:text="${entry.getProduct().getCount()}"></span>
             <br>
-            Количество:
+            Количество, которое вы заказываете:
             <span th:text="${entry.getCount()}"></span>
             <h4>Изменить количество товара</h4>
             <form th:method="get" th:action="@{/cart/edit_count/{id} (id = ${entry.getProduct().getId()})}">
@@ -40,6 +42,11 @@
     <form th:method="get" th:action="@{/cart/clear}">
         <div><input type="submit" value="Очистить корзину"/></div>
     </form>
+    <div>
+        <br>
+        Итого: <label th:text="${totalPrice}"></label>₽
+        <br>
+    </div>
     <a href="/order">Заказать</a>
 </body>
 </html>

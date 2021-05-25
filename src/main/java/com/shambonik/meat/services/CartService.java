@@ -2,6 +2,8 @@ package com.shambonik.meat.services;
 
 import com.shambonik.meat.models.Product;
 import com.shambonik.meat.models.ProductCount;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,8 +20,14 @@ public class CartService {
     @Value("${cookie.cart.name}")
     private String cookieName;
 
+    @Data
+    @AllArgsConstructor
+    public static class Pair{
+        private List<ProductCount> productCounts;
+         private int totalPrice;
+    }
 
-    public List<ProductCount> getProducts(String meatCart){
+    public Pair getProducts(String meatCart){
         if(meatCart!=null && !meatCart.equals("")) {
             String[] stringIDs = getListOfIDs(meatCart);
             ArrayList<Long> IDs = new ArrayList<>();
@@ -36,15 +44,17 @@ public class CartService {
                 }
             }
             ArrayList<ProductCount> list = new ArrayList<>();
+            int totalPrice = 0;
             for (Map.Entry<Long, Integer> entry : mapIDs.entrySet()) {
                 Product product = productService.getProductById(entry.getKey());
-                if (product != null) {
+                if (product != null && product.isActive()) {
                     list.add(new ProductCount(product, entry.getValue()));
+                    totalPrice += product.getPrice() * entry.getValue();
                 }
             }
-            return list;
+            return new Pair(list, totalPrice);
         }
-        return null;
+        return new Pair(null, 0);
     }
 
     public String addToCart(String meatCart, long id, HttpServletResponse response){
@@ -67,13 +77,14 @@ public class CartService {
             Map<Long, Integer> mapIDs = new HashMap<>();
             for (String stringID : stringIDs) {
                 Long temp = Long.parseLong(stringID);
+                Product product = productService.getProductById(temp);
                 if (!mapIDs.containsKey(temp)) {
-                    if (productService.getProductById(temp) == null)
-                        changes = true;
-                    else
+                    if (product != null && product.isActive())
                         mapIDs.put(temp, 1);
+                    else
+                        changes = true;
                 } else {
-                    if (productService.getProductById(temp).getCount() > mapIDs.get(temp))
+                    if (product.getCount() > mapIDs.get(temp))
                         mapIDs.put(temp, mapIDs.get(temp) + 1);
                     else
                         changes = true;
@@ -100,7 +111,9 @@ public class CartService {
     }
 
     public String getCart(String meatCart, Model model){
-        model.addAttribute("list", getProducts(meatCart));
+        Pair pair = getProducts(meatCart);
+        model.addAttribute("list", pair.getProductCounts());
+        model.addAttribute("totalPrice", pair.getTotalPrice());
         return "cart";
     }
 

@@ -19,6 +19,13 @@
         <div>
             <label> Count <input type="number" th:field="*{count}" min="0"/> </label>
         </div>
+        <div>
+            <label> Price <input type="number" th:field="*{price}" min="0"/>₽ </label>
+        </div>
+        <div>
+            Active
+            <input type="checkbox" th:field="*{active}"/>
+        </div>
         <select th:field="*{category}">
             <option value=""> -- </option>
             <option th:each="categoryEnum : ${categories}" th:value="${categoryEnum}" th:text="${categoryEnum}"></option>

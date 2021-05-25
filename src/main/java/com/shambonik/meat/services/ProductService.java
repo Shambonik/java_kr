@@ -23,6 +23,10 @@ public class ProductService {
     @Value("${upload.path}")
     private String uploadPath;
 
+    public List<Product> getActiveProducts(){
+        return productRepo.findByActive(true);
+    }
+
     public List<Product> getProducts(){
         return productRepo.findAll();
     }
@@ -42,8 +46,8 @@ public class ProductService {
         for(int i = 0; i < categoryFilters.getList().size(); i++) {
             if(filters.getList().get(i).isChecked()) {
                 categoryFilters.getList().get(i).setChecked(true);
-                productList.addAll(productRepo.findProductsByCategory(
-                        Product_Category.valueOf(categoryFilters.getList().get(i).getName())));
+                productList.addAll(productRepo.findByCategoryAndActive(
+                        Product_Category.valueOf(categoryFilters.getList().get(i).getName()), true));
             }
             else falseCount++;
         }
@@ -108,7 +112,9 @@ public class ProductService {
             redirectAttributes.addFlashAttribute("categoryErr", "Выберите категорию товара");
         }
         if (!flagOfErrors) {
-            productOriginal.setAll(product.getName(), product.getDescription(), product.getCategory(), product.getCount());
+            productOriginal.setAll(product.getName(), product.getDescription(),
+                    product.getPrice(), product.isActive(),
+                    product.getCategory(), product.getCount());
             productRepo.save(productOriginal);
             return "redirect:/admin/products";
         }
@@ -120,10 +126,10 @@ public class ProductService {
         file.delete();
     }
 
-    public void deleteProduct(Long id){
+    public void changeProductActive(Long id){
         Product product = productRepo.findProductById(id);
-        deleteImage(product);
-        productRepo.delete(product);
+        product.setActive(!product.isActive());
+        productRepo.save(product);
     }
 
     public String getEditPage(Model model, long id) {

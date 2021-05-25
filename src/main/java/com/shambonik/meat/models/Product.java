@@ -17,6 +17,8 @@ public class Product {
 
     private String name;
     private String description;
+    private int price;
+    private boolean active = true;
 
     @ElementCollection(targetClass = Product_Category.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "product_category_shamb", joinColumns = @JoinColumn(name = "product_id"))
@@ -29,9 +31,12 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ProductCount> countInOrders;
 
-    public void setAll(String name, String description, Set<Product_Category> category, int count){
+    public void setAll(String name, String description, int price, boolean active,
+                       Set<Product_Category> category, int count){
         this.name = name;
         this.description = description;
+        this.price = price;
+        this.active = active;
         this.category = category;
         this.count = count;
     }

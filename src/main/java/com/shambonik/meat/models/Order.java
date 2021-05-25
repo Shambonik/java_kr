@@ -20,6 +20,7 @@ public class Order{
     private String address = "";
     private String email = "";
     private String phone = "";
+    private int totalPrice;
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<ProductCount> products;
 

@@ -80,7 +80,7 @@ public class OrderService {
         if(user != null){
             orders = new HashSet<>(userService.getUserById(user.getId()).getOrders());
         }
-        if(orderCookie != null){
+        else if(orderCookie != null){
             String[] orderIDstr = getListOfIDs(orderCookie);
             for(String orderStr : orderIDstr){
                 if(!orderStr.equals(""))
@@ -106,7 +106,8 @@ public class OrderService {
             model.put("message", "Не все поля заполены!");
             return "order";
         }
-        List<ProductCount> products = cartService.getProducts(meatCart);
+        CartService.Pair pair = cartService.getProducts(meatCart);
+        List<ProductCount> products = pair.getProductCounts();
         if(products != null) {
             for (ProductCount product : products) {
                 if(product.getCount() > product.getProduct().getCount()){
@@ -116,6 +117,7 @@ public class OrderService {
                 }
             }
             order.setUser(user);
+            order.setTotalPrice(pair.getTotalPrice());
             order.setStatus(Collections.singleton(Order_Status.PROCESSING));
             orderRepo.save(order);
             for (ProductCount product : products) {

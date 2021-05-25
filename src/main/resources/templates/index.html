@@ -45,6 +45,9 @@
         <br>
         <span th:text="${product.getDescription()}"></span>
         <br>
+        Цена
+        <span th:text="${product.getPrice()}"></span>₽
+        <br>
         <div th:if="${product.getCount()} > 0">
             <span>Есть в наличии</span><br>
             <form th:method="post" th:action="@{/add_to_cart/{id} (id = ${product.getId()})}">

@@ -15,13 +15,21 @@
         <br>
         <span th:text="${product.getDescription()}"></span>
         <br>
+        <br>
+        Price
+        <span th:text="${product.getPrice()}"></span>₽
+        <br>
+        <br>
+        Active
+        <span th:text="${product.isActive()}"></span>
+        <br>
         Количество:
         <span th:text="${product.getCount()}"></span>
         <form th:method="get" th:action="@{/admin/products/edit_product/{id} (id = ${product.getId()})}">
             <button type="submit">Редактировать</button>
         </form>
-        <form th:method="post" th:action="@{/admin/products/delete_product/{id} (id = ${product.getId()})}">
-            <button type="submit">Удалить</button>
+        <form th:method="post" th:action="@{/admin/products/change_product_active/{id} (id = ${product.getId()})}">
+            <button type="submit">Сменить Active</button>
         </form>
     </div>
     <a href="/admin/products/add_product">Добавить продукт</a>

@@ -25,6 +25,7 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepo orderRepo;
     private final ProductCountRepo productCountRepo;
+    private final EmailService emailService;
     @Value("${cookie.orders.name}")
     private String cookieName;
 
@@ -48,6 +49,7 @@ public class OrderService {
         if(!order.getStatus().contains("COMPLETED") && !order.getStatus().contains("CANCELED")){
             order.setStatus(Collections.singleton(Order_Status.CANCELED));
             orderRepo.save(order);
+            sendChangeStatusEmail(order);
         }
         return "redirect:/order/list";
     }
@@ -91,10 +93,18 @@ public class OrderService {
         return"order_list";
     }
 
+    private void sendChangeStatusEmail(Order order){
+        emailService.send(order.getEmail(), "Изменен статус заказа в Мясной лавке",
+                "Изменен статус вашего заказв в Мясной лавке.\n" +
+                        "ID заказа: " + order.getId() + "\n" +
+                        "Текущий статус заказа " + order.getStatus());
+    }
+
     public String changeStatus(long id, Order order){
         Order original_order = orderRepo.findOrderById(id);
         original_order.setStatus(order.getStatus());
         orderRepo.save(original_order);
+        sendChangeStatusEmail(original_order);
         return "redirect:/admin/orders";
     }
 
@@ -120,9 +130,12 @@ public class OrderService {
             order.setTotalPrice(pair.getTotalPrice());
             order.setStatus(Collections.singleton(Order_Status.PROCESSING));
             orderRepo.save(order);
+            StringBuilder productsListEmail = new StringBuilder();
             for (ProductCount product : products) {
                 productService.reduceCount(product);
                 product.setOrder(order);
+                productsListEmail.append(product.getProduct().getName()+
+                        " в количестве " + product.getCount() + "\n");
                 productCountRepo.save(product);
             }
             cartService.clearCart(response);
@@ -131,6 +144,14 @@ public class OrderService {
             cookie.setPath("/");
             cookie.setMaxAge(1000000);
             response.addCookie(cookie);
+
+            emailService.send(order.getEmail(), "Заказ в Мясной лавке",
+                    "Вы сделали заказ в Мясной лавке.\n" +
+                            "ID заказа: " + order.getId() + "\n" +
+                            "Заказаные товары:\n" + productsListEmail.toString() + "\n" +
+                            "К оплате " + order.getTotalPrice() + "₽\n" +
+                            "Заказ сделан на имя: " + order.getName() + "\n" +
+                            "Адрес доставки: " + order.getAddress());
             return "redirect:/";
         }
         model.put("message", "Empty cart!");
